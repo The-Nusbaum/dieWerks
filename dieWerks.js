@@ -1,10 +1,24 @@
-export class DieWorks {
+export class DieWerks {
+  /**
+   * Doesn't do anything, really. Sad Constructor.
+   */
   constructor() {}
 
+  /**
+   * adds the various rolls from a multi-die roll
+   * @param {Int} total the number to add to. will attempt to parse as int
+   * @param {Int} num   the number to add. will attempt to parse as int
+   * @return {Int}    the final total
+   */
   addRolls(total, num) {
       return parseInt(total) + parseInt(num);
   }
 
+  /**
+   * Splits out the distinct XdY rolls to handle them individually
+   * @param  {string} formula  a die formula, 2d6 + 2 for example
+   * @return {Array}          an array of distinct rolls
+   */
   getDistinctRolls(formula) {
   	var r = /\d+[dD]\d+[hlHL]?/g
     var rolls = [];
@@ -17,6 +31,11 @@ export class DieWorks {
     return rolls;
   }
 
+  /**
+   * [compileRolls description]
+   * @param  {string} formula   a die formula, 2d6 + 2 for example
+   * @return {Array}            the array of results
+   */
   compileRolls(formula) {
   	let rolls = getDistinctRolls(formula);
     let out = formula;
@@ -32,10 +51,21 @@ export class DieWorks {
     };
   }
 
+  /**
+   * Actually rolls a die
+   * @param  {Int} max    the upper limit, or highest die face
+   * @return {Int}        te numerical result of a single roll
+   */
   rollD(max) {
   	return Math.round(Math.random() * (max - 1) + 1);
   }
 
+  /**
+   * the money maker. Actually handles the complex die logic, modifiers,
+   * modes, etc.
+   * @param  {String} formula a die formula, 2d6 + 2 for example
+   * @return {Array}         the reulsts of the roll, and associated meta info
+   */
   doRoll(formula) {
   	let rolls = [];
     let rollsAry = [];
@@ -67,11 +97,11 @@ export class DieWorks {
         let roll2 = doRoll(tmpFormula);
         let val,str;
         if(roll1.value < roll2.value) {
-        	var val = roll1.value;
-          var str = "-" + roll2.value + "-, " + roll1.value;
+        	val = roll1.value;
+          str = "-" + roll2.value + "-, " + roll1.value;
         } else {
-        	var val = roll2.value;
-          var str = "-" + roll1.value + "-, " + roll2.value;
+        	val = roll2.value;
+          str = "-" + roll1.value + "-, " + roll2.value;
         }
         out = {
         	value: val,
